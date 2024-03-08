@@ -19,6 +19,7 @@ public class UsersController : Controller
         return (ViewResult)ListUsers(_userService.GetAllUsers());
     }
 
+
     // return Active users
     [HttpGet("ActiveUsers")]
     public IActionResult ListActiveOnly()
@@ -26,12 +27,14 @@ public class UsersController : Controller
         return ListUsers(_userService.FilterByActive(true));
     }
 
+
     // return Non-Active users
     [HttpGet("InactiveUsers")]
     public IActionResult ListNonActive()
     {
         return ListUsers(_userService.FilterByActive(false));
     }
+
 
     // return view with passed user(s) model
     private IActionResult ListUsers(IEnumerable<User> filteredUsers)
@@ -42,7 +45,8 @@ public class UsersController : Controller
             Forename = p.Forename,
             Surname = p.Surname,
             Email = p.Email,
-            IsActive = p.IsActive            
+            IsActive = p.IsActive,
+            DateOfBirth = p.DateOfBirth
         });       
 
         var users = new UserListViewModel { Items = usersFromService.ToList() };     
