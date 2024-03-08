@@ -7,6 +7,7 @@ namespace UserManagement.Data;
 public class DataContext : DbContext, IDataContext
 {
     public DataContext() => Database.EnsureCreated();
+    public DbSet<User>? Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseInMemoryDatabase("UserManagement.Data.DataContext");
@@ -26,8 +27,6 @@ public class DataContext : DbContext, IDataContext
             new User { Id = 10, Forename = "Johnny", Surname = "Blaze", Email = "jblaze@example.com", IsActive = true },
             new User { Id = 11, Forename = "Robin", Surname = "Feld", Email = "rfeld@example.com", IsActive = true },
         });
-
-    public DbSet<User>? Users { get; set; }
 
     public IQueryable<TEntity> GetAll<TEntity>() where TEntity : class
         => base.Set<TEntity>();

@@ -11,5 +11,10 @@ public interface IUserService
     /// <param name="isActive"></param>
     /// <returns></returns>
     IEnumerable<User> FilterByActive(bool isActive);
-    IEnumerable<User> GetAll();
+
+    /// <summary>
+    /// Retrieves all users from the data source.
+    /// </summary>
+    /// <returns>An IEnumerable collection of User objects representing all users in the data source.</returns>
+    IEnumerable<User> GetAllUsers();
 }
