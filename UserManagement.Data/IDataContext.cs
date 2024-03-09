@@ -36,4 +36,15 @@ public interface IDataContext
     /// This method removes the specified entity from the data store.
     /// </remarks>
     void Delete<TEntity>(TEntity entity) where TEntity : class;
+
+    /// <summary>
+    /// Retrieves an entity of type <typeparamref name="TEntity"/> based on the provided identifier.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of entity to retrieve. Must be a reference type.</typeparam>
+    /// <param name="id">The identifier of the entity to retrieve.</param>
+    /// <returns>The entity with the specified identifier, or null if not found.</returns>
+    /// <remarks>
+    /// This method fetches the entity from the data store using its unique identifier.
+    /// </remarks>
+    TEntity GetById<TEntity>(long id) where TEntity : class;
 }

@@ -1,0 +1,43 @@
+﻿@model UserManagement.Web.Models.Users.UserListItemViewModel
+
+@{
+    ViewBag.Title = "Edit User";    
+}
+
+<h2>Edit User</h2>
+
+<form asp-controller="Users" asp-action="ShowUserEdit" method="post">
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group mt-3 mb-3">
+        <label asp-for="Forename"></label>
+        <input asp-for="Forename" class="form-control" />
+        <span asp-validation-for="Forename" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3 mb-3">
+        <label asp-for="Surname"></label>
+        <input asp-for="Surname" class="form-control" />
+        <span asp-validation-for="Surname" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3 mb-3">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3 mb-3">
+        <label asp-for="IsActive"></label>
+        <input asp-for="IsActive" class="form-check-input" />
+        <span asp-validation-for="IsActive" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3 mb-3">
+        <label asp-for="DateOfBirth"></label>
+        <input asp-for="DateOfBirth" class="form-control" value="@(Model?.DateOfBirth != null ? Model.DateOfBirth.ToString("yyyy-MM-dd") : "1900-01-01")">
+        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3 mb-3">Submit</button>
+</form>

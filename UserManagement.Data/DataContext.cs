@@ -137,4 +137,10 @@ public class DataContext : DbContext, IDataContext
         base.Remove(entity);
         SaveChanges();
     }
+
+    public TEntity GetById<TEntity>(long id) where TEntity : class
+    {
+        TEntity entity = Set<TEntity>().Find(id)!;
+        return entity;
+    }
 }

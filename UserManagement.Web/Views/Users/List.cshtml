@@ -5,26 +5,47 @@
     string currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "ListAll";
 }
 
-<h2>User List</h2>
+@functions {
+    @* switch statement for alternating body title based on route calling view*@
+    string GetControllerAction(string currentAction)
+    {
+        switch (currentAction)
+        {
+            case "ListAll":
+                return "All Users";
+            case "ListActiveOnly":
+                return "Active Users";
+            case "ListNonActive":
+                return "Non Active Users";
+            case "UserView":
+                // take the first user Id for concatenation (list is only single user)
+                return $"User #{Model.Items.FirstOrDefault()?.Id.ToString()}";
+            default:
+                return "Users List";
+        }
+    }
+}
 
-<div class="table-responsive">
+<h2>@(GetControllerAction(currentAction))</h2>
+
+<div class="table-responsive" style="max-height: 71vh; overflow-y: auto; margin-bottom: 10px;">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
+                <th class="@(currentAction != "UserView" ? "d-none" : "")">Id</th>
                 <th>Forename</th>
                 <th>Surname</th>
                 <th>Email</th>
                 <th>Account Active</th>
-                <th>Date Of Birth</th>
-                <th style="width: 1px;"></th>
+                <th class="@(currentAction != "UserView" ? "d-none" : "")">Date Of Birth</th>
+                <th style="width: 1px;" class="@(currentAction == "UserView" ? "d-none" : "")">Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Items)
             {
                 <tr>
-                    <td>
+                    <td class="@(currentAction != "UserView" ? "d-none" : "")">
                         @item.Id
                     </td>
                     <td>
@@ -39,18 +60,23 @@
                     <td>
                         @(item.IsActive ? "Yes" : "No")
                     </td>
-                    <td>
+                    <td class="@(currentAction != "UserView" ? "d-none" : "")">
                         @item.DateOfBirth
                     </td>
-                    <td>
+                    <td class="@(currentAction == "UserView" ? "d-none" : "")">
                         <div class="dropdown">
                             <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="btnToggleActions">
                                 Actions
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="btnToggleActions">
-                                <li><a class="dropdown-item" href="#">View</a></li>
-                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                                <li><a asp-controller="Users" asp-action="UserView" asp-route-id="@item.Id" class="dropdown-item">View User</a></li>
+                                <li><a asp-controller="Users" asp-action="ShowUserEdit" asp-route-id="@item.Id" class="dropdown-item">Edit</a></li>
+                                <li>
+                                    <form asp-controller="Users" asp-action="UserDelete" asp-route-id="@item.Id" method="post">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="dropdown-item">Delete</button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     </td>
@@ -68,8 +94,6 @@
         <a asp-controller="Users" asp-action="ListNonActive" class="btn btn-default btn-hover-highlight @(currentAction == "ListNonActive" ? "btn btn-primary" : "")">Non Active</a>
     </div>
 
-    <a href="#" class="btn btn-primary float-end">
-        Add User
-    </a>
+    <a asp-controller="Users" asp-action="ShowUserCreate" class="btn btn-primary float-end">Add User</a>
 </div>
 
