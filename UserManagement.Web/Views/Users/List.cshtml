@@ -1,5 +1,10 @@
 ﻿@model UserManagement.Web.Models.Users.UserListViewModel
 
+@{
+    ViewBag.Title = "All Users";
+    string currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "ListAll";
+}
+
 <h2>User List</h2>
 
 <div class="table-responsive">
@@ -54,12 +59,13 @@
         </tbody>
     </table>
 </div>
+<hr />
 
 <div>
     <div class="btn-group" role="group">
-        <a asp-controller="Users" asp-action="ListAll" class="btn btn-default btn-hover-highlight ">Show All</a>
-        <a asp-controller="Users" asp-action="ListActiveOnly" class="btn btn-default btn-hover-highlight ">Active Only</a>
-        <a asp-controller="Users" asp-action="ListNonActive" class="btn btn-default btn-hover-highlight ">Non Active</a>
+        <a asp-controller="Users" asp-action="ListAll" class="btn btn-default btn-hover-highlight @(currentAction == "ListAll" ? "btn btn-primary" : "")">Show All</a>
+        <a asp-controller="Users" asp-action="ListActiveOnly" class="btn btn-default btn-hover-highlight @(currentAction == "ListActiveOnly" ? "btn btn-primary" : "")">Active Only</a>
+        <a asp-controller="Users" asp-action="ListNonActive" class="btn btn-default btn-hover-highlight @(currentAction == "ListNonActive" ? "btn btn-primary" : "")">Non Active</a>
     </div>
 
     <a href="#" class="btn btn-primary float-end">
