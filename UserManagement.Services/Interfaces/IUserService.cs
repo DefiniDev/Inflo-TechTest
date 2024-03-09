@@ -21,10 +21,24 @@ public interface IUserService
 
 
     /// <summary>
+    /// Retrieves all logs from the data source.
+    /// </summary>
+    /// <returns>An IEnumerable collection of log objects representing all logs in the data source.</returns>
+    IEnumerable<ActionLog> GetAllLogs();
+
+
+    /// <summary>
     /// Create a new user.
     /// </summary>
     /// <param name="newUser">The user to be created.</param>
     void CreateUser(User newUser);
+
+
+    /// <summary>
+    /// Create a new log.
+    /// </summary>
+    /// <param name="newActionLog">The log to be created.</param>
+    void CreateLog(ActionLog newLog);
 
 
     /// <summary>

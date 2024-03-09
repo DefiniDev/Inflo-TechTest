@@ -14,12 +14,11 @@ namespace UserManagement.Services.Domain.Implementations
 
 
         // general dataset retrieval methods
-        public IEnumerable<User> GetAllUsers() => _dataAccess.GetAll<User>(); // users        
-
+        public IEnumerable<User> GetAllUsers() => _dataAccess.GetAll<User>(); // users
+        public IEnumerable<ActionLog> GetAllLogs() => _dataAccess.GetAll<ActionLog>(); // logs
 
         // returns user collection filtered by active state
         public IEnumerable<User> FilterByActive(bool isActive) => _dataAccess.GetAll<User>().Where(x => x.IsActive == isActive);
-
 
         // create a new user
         public void CreateUser(User newUser)
@@ -27,6 +26,11 @@ namespace UserManagement.Services.Domain.Implementations
             _dataAccess.Create(newUser);
         }
 
+        // create a new action log
+        public void CreateLog(ActionLog newLog)
+        {
+            _dataAccess.Create(newLog);
+        }
 
         // delete a user
         public void DeleteUser(long userId)
@@ -37,7 +41,6 @@ namespace UserManagement.Services.Domain.Implementations
                 _dataAccess.Delete(userToDelete);
             }
         }
-
 
         // update user details
         public void UpdateUser(User updatedUser)

@@ -1,0 +1,61 @@
+﻿@model UserManagement.Web.Models.ActionLogs.ActionLogViewModel
+
+@{
+    ViewBag.Title = "Action Log Details";
+}
+
+
+<h2 class="mb-4 mt-2" style="text-decoration: underline;">Action Logs</h2>
+<div class="form-horizontal">
+    @foreach (var item in Model.Items)
+    {
+        <div class="row">
+            <label class="col-sm-2 control-label">Action ID:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">@item.Id</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-sm-2 control-label">User ID:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">@item.UserId</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-sm-2 control-label">Action Type:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">@item.ActionType</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-sm-2 control-label">Timestamp:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">@item.Timestamp</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-sm-2 control-label">Notes:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">@(!string.IsNullOrEmpty(item.Notes) ? item.Notes : "N/A")</p>
+            </div>
+        </div>
+
+        <hr /> <!-- Optional: Add a horizontal line between items -->
+    }
+</div>
+
+
+
+
+<div>
+    <div class="btn-group" role="group">
+        <a asp-controller="Users" asp-action="ListAll" class="btn btn-hover-highlight me-2" style="border-radius: 3px;">Show All</a>
+        <a asp-controller="Users" asp-action="ListActiveOnly" class="btn btn-hover-highlight me-2" style="border-radius: 3px;">Active Only</a>
+        <a asp-controller="Users" asp-action="ListNonActive" class="btn btn-hover-highlight me-2" style="border-radius: 3px;">Non Active</a>
+    </div>
+    <a asp-controller="Users" asp-action="ShowUserCreate" class="btn btn-primary float-end">Add User</a>
+</div>

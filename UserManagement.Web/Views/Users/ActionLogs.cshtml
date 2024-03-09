@@ -1,0 +1,116 @@
+﻿@model UserManagement.Web.Models.ActionLogs.ActionLogViewModel
+
+@{
+    ViewBag.Title = "Action Logs";
+}
+
+<h2>Action Logs</h2>
+
+<div class="mb-3">
+    <div class="d-flex align-items-center">
+        <label for="userIdSearchInput" class="form-label text-nowrap me-3">Search by User ID:</label>
+        <input type="text" id="userIdSearchInput" class="form-control form-control-sm me-2" oninput="filterTable('Search', 'Search')" />
+
+        <div class="dropdown ms-2">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="actionTypeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Filter By Action
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="actionTypeDropdown">
+                <li><a class="dropdown-item" href="#" onclick="filterTable('', 'Filter By Action')">None</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterTable('Create', 'Filter: Create')">Create</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterTable('Edit', 'Filter: Edit')">Edit</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterTable('Delete', 'Filter: Delete')">Delete</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive" style="max-height: 65vh; overflow-y: auto; margin-bottom: 10px;">
+    <table class="table table-striped" id="actionLogsTable">
+        <thead>
+            <tr>
+                <th style="display: none;">Id</th> <!-- hidden Id column header -->
+                <th >User ID</th>
+                <th>Action Type</th>
+                <th>Timestamp</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td style="display: none;">@item.Id</td> <!-- hidden Id column -->
+                    <td>@item.UserId</td>
+                    <td>@item.ActionType</td>
+                    <td>@item.Timestamp</td>
+                    <td>
+                        <a asp-controller="Users" asp-action="ActionLogDetails" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>    
+</div>
+<hr />
+
+<div>
+    <div class="btn-group" role="group">
+        <a asp-controller="Users" asp-action="ListAll" class="btn btn-hover-highlight me-2" style="border-radius: 3px;">Show All</a>
+        <a asp-controller="Users" asp-action="ListActiveOnly" class="btn btn-hover-highlight me-2" style="border-radius: 3px;">Active Only</a>
+        <a asp-controller="Users" asp-action="ListNonActive" class="btn btn-hover-highlight me-2" style="border-radius: 3px;">Non Active</a>
+    </div>
+    <a asp-controller="Users" asp-action="ShowUserCreate" class="btn btn-primary float-end">Add User</a>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        filterTable('', 'Filter By Action'); // Set default value to 'None' on view load
+    });
+
+
+    function filterTable(actionType, dropdownText) {
+        var userIdSearchInput, userIdFilter, table, tr, userIdTd, actionTypeTd, actionTypeDropdownText, i, userIdTxtValue, actionTypeTxtValue;
+        userIdSearchInput = document.getElementById("userIdSearchInput");
+        userIdFilter = userIdSearchInput.value.toUpperCase();
+        table = document.getElementById("actionLogsTable");
+        tr = table.getElementsByTagName("tr");
+
+        if (actionType === "Search") {
+            actionTypeDropdownText = document.getElementById("actionTypeDropdown").innerText;
+            switch (actionTypeDropdownText) {
+                case "Filter By Action":
+                    actionType = "";
+                    break;
+                case "Filter: Create":
+                    actionType = "Create";
+                    break;
+                case "Filter: Edit":
+                    actionType = "Edit";
+                    break;
+                case "Filter: Delete":
+                    actionType = "Delete";
+                    break;
+            }
+        } else {
+            document.getElementById("actionTypeDropdown").innerText = dropdownText;
+        }
+
+        for (i = 0; i < tr.length; i++) {
+            userIdTd = tr[i].getElementsByTagName("td")[1];
+            actionTypeTd = tr[i].getElementsByTagName("td")[2];
+            if (userIdTd && actionTypeTd) {
+                userIdTxtValue = userIdTd.textContent || userIdTd.innerText;
+                actionTypeTxtValue = actionTypeTd.textContent || actionTypeTd.innerText;
+
+                // If both conditions are met, display the row; otherwise, hide it.
+                if ((actionType === "" || actionTypeTxtValue.trim().toUpperCase() === actionType.toUpperCase()) && (userIdFilter === "" || userIdTxtValue.trim().toUpperCase() === userIdFilter)) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
